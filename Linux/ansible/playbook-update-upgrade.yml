@@ -1,0 +1,11 @@
+- hosts: linux
+  become: yes
+  tasks:
+  - name: Update and upgrade quickly also removes packages no longer needed
+    apt:
+      name: "*"
+      state: latest
+      update_cache: yes
+      autoremove: yes
+      cache_valid_time: 3600 # actualiza cache si no se ha realizado hace mas de una hora
+      force_apt_get: yes
