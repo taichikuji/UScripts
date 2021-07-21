@@ -1,0 +1,23 @@
+<Configuration>
+
+  <Add OfficeClientEdition="64" Channel="Monthly">
+    <Product ID="O365ProPlusRetail">
+      <Language ID="es-es" />
+      <!-- This is an example of what I like to exclude. You can add / remove what you prefer -->
+      <ExcludeApp ID="Publisher" />
+      <ExcludeApp ID="OneDrive" />
+      <ExcludeApp ID="Groove" />
+      <ExcludeApp ID="OneNote" />
+      <ExcludeApp ID="Access" />
+      <ExcludeApp ID="Lync" />
+    </Product>
+  </Add>
+  <Property Name="SharedComputerLicensing" Value="0" />
+  <Property Name="PinIconsToTaskbar" Value="TRUE" />
+  <Property Name="SCLCacheOverride" Value="0" />
+  <Property Name="AUTOACTIVATE" Value="1" />
+  <Property Name="FORCEAPPSHUTDOWN" Value="FALSE"/>
+  <Updates Enabled="TRUE" />
+  <RemoveMSI All="TRUE" />
+  <Display Level="Full" AcceptEULA="TRUE" />
+</Configuration>
