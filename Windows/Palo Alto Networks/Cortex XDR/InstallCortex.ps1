@@ -19,14 +19,16 @@ If (Test-Path -Path $isInstalled) {
         } until ( -not $($dis.ExitCode-eq 5))
     }
 }
-try {
-    Write-Host "Installing $list ..."
-    # Installs the .msi file
-    $arguments = "/i $list /passive /L*v $(Get-Location)\msiexec.log"
-    Start-Process "msiexec.exe" -ArgumentList $arguments -Wait -PassThru
-} catch {
+Write-Host "Attempting to install $list ..."
+
+# Installs the .msi file
+$dis = Start-Process "msiexec.exe" -ArgumentList $("/i $list /passive /L*v $(Get-Location)\msiexec.log") -Wait -PassThru -ErrorAction Stop
+If (@(0, 3010) -contains $dis.ExitCode) {
+    Write-Host "Installation was succesful and finished with Exit code $($dis.ExitCode)!"
+} else {
     Write-Host "Error installing $list"
     Break
 }
+
 Write-Host "Done! Closing script"
 Exit 0
