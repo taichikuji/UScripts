@@ -13,21 +13,22 @@
 Function Count-Up
 {
     param([string]$url, [string]$webhook)
-    while($i -lt 9999)
-    {
-        $i++
-        try {$StatusCode = $(Invoke-WebRequest -URI $url -Method 'GET').StatusCode}catch{$StatusCode = $_.Exception.Response.StatusCode.value__}
+        try {$StatusCode = $(Invoke-WebRequest -URI $url -Method 'GET').StatusCode}catch{$StatusCode = $_.Exception.Response.StatusCode.Value__}
         if($StatusCode -eq 200) {
             $embedObject = [PSCustomObject]@{
                 color = '4289797'
-                title = "$i | $url | $StatusCode"
-                description = "$url is now available with status code $StatusCode"
+                title = "$url | $StatusCode"
+                description = "$url is now available with the following status code: $StatusCode"
             }
-            Send-Message -webhook $webhook -embedObject $embedObject
-            exit 0
+        } else {
+            $embedObject = [PSCustomObject]@{
+                color = 'DC143C'
+                title = "$url | $StatusCode"
+                description = "$url has the following status code: $StatusCode"
+            }
         }
-        Write-Host "$i | $url | $StatusCode"
+        Send-Message -webhook $webhook -embedObject $embedObject
+        exit 0
     }
-}
 
-Count-Up -url https://<> -webhook https://discord.com/api/webhooks/<>/<>
+Count-Up -url https://<>/ -webhook https://discord.com/api/webhooks/<>/<>/
