@@ -2,25 +2,27 @@
 ROOT_UID=0
 E_NOTROOT=87
 
-if [ "$UID" -ne "$ROOT_UID" ]; then
-        echo "error, necesitas root para ejecutar."
-        exit $E_NOTROOT
+if [[ "$UID" -ne "$ROOT_UID" ]]; then
+        echo "Error: You need root to execute."
+        exit "$E_NOTROOT"
 fi
 
-read -p "Cual es el usuario que quieres buscar? " user
-if getent passwd $user > /dev/null 2>&1; then
-        echo "El usuario $user ya existe, mostrando informacion del usuario..."
-        echo "Printando el usuario mediante el comando id" && id $user
-        echo "Printando los grupos mediante el comando groups" && groups $user
-        echo "Printando mediante grep a /etc/passwd" && grep -i $user /etc/passwd
+read -rp "What is the user you want to search for? " user
+
+if getent passwd "$user" > /dev/null 2>&1; then
+        echo "The user $user already exists, showing user information..."
+        echo "Printing the user by the id command" && id "$user"
+        echo "Printing the groups by the groups command" && groups "$user"
+        echo "Printing by grepping /etc/passwd" && grep -i "$user" /etc/passwd
 else
-                read -p "No existe, quieres crear el usuario $user? (y/n) " respuesta
-                if [ "$respuesta" = "y" ]; then
-                        echo "Creando usuario..."
-                        adduser $user
-                        su $user && echo "Hecho!"
-                else
-                        echo "Cancelando creacion de usuario..."
-                fi
+        read -rp "It does not exist, do you want to create the user $user? (y/n) " response
+        if [[ "$response" =~ ^[Yy]$ ]]; then
+                echo "Creating user..."
+                adduser "$user"
+                su "$user" && echo "Done!"
+        else
+                echo "Cancelling user creation..."
+        fi
 fi
+
 exit 0

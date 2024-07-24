@@ -1,40 +1,38 @@
-# !/bin/bash
+#!/bin/bash
 
 RED='\033[0;31m'
 NC='\033[0m'
 printf "${RED}$(ls)${NC}\n"
-read -p "De la lista que acaba de aparecer, cual es el fichero que quieres comprobar? " fichero
 
-if [ ! -f $fichero ];then
-    printf "${RED}[ERROR 404] FICHERO NO EXISTE${NC}\n"
+read -p "From the list that just appeared, which file do you want to check? " file
+
+if [ ! -f "$file" ]; then
+    printf "${RED}[ERROR 404] FILE NOT FOUND${NC}\n"
     exit 404
 fi
 
-if [ $(find $fichero -perm -g=r | wc -l) -eq 1 ]
-then
-    echo "Hay permisos de lectura"
+if find "$file" -perm -g=r -print -quit | grep -q .; then
+    echo "Read access is available"
     readp="r"
 else
-    echo "No hay acceso de lectura"
+    echo "No read access"
     readp="-"
 fi
 
-if [ $(find $fichero -perm -g=w | wc -l) -eq 1 ]
-then
-    echo "Hay permisos de escritura"
+if find "$file" -perm -g=w -print -quit | grep -q .; then
+    echo "Write access is available"
     writep="w"
 else
-    echo "No hay acceso de escritura"
+    echo "No write access"
     writep="-"
 fi
 
-if [ $(find $fichero -perm -g=x | wc -l) -eq 1 ]
-then
-    echo "Hay permisos de ejecución"
+if find "$file" -perm -g=x -print -quit | grep -q .; then
+    echo "Execute access is available"
     exep="x"
 else
-    echo "No hay acceso de ejecución"
+    echo "No execute access"
     exep="-"
 fi
 
-echo "Los permisos son los siguientes; $readp$writep$exep"
+echo "The permissions are as follows: $readp$writep$exep"

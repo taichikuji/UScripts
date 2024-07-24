@@ -1,5 +1,10 @@
 Write-Host "Removing profiles..."
-Get-CimInstance -class Win32_UserProfile | Where-Object {
-    (!$_.Special)
-} | Remove-CimInstance
-Write-Host "Removed! Exiting..."
+$profiles = Get-CimInstance -ClassName Win32_UserProfile | Where-Object {
+    -not $_.Special
+}
+if ($profiles) {
+    $profiles | ForEach-Object { $_ | Remove-CimInstance }
+    Write-Host "Removed! Exiting..."
+} else {
+    Write-Host "No profiles found to remove. Exiting..."
+}

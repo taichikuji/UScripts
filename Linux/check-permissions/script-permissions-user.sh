@@ -1,34 +1,34 @@
 # !/bin/bash
 
-fichero="$1"
+file="$1"
 
 [ $# -eq 0 ] && exit 1
 
-if [ -r "$fichero" ]
+if [ -r "$file" ]
 then
     echo ""
     readp="r"
 else
-    echo "No hay acceso de lectura"
+    echo "No read access"
     readp="-"
 fi
 
-if [ -w "$fichero" ]
+if [ -w "$file" ]
 then
     echo ""
     writep="w"
 else
-    echo "No hay acceso de escritura"
+    echo "No write access"
     writep="-"
 fi
 
-if [ -x "$fichero" ]
+if [ -x "$file" ]
 then
     echo ""
     exep="x"
 else
-    echo "No hay acceso de ejecución"
+    echo "No execute access"
     exep="-"
 fi
 
-echo "Los permisos son los siguientes; $readp$writep$exep"
+echo "Permissions are as follows: $readp$writep$exep"

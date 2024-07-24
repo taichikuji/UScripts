@@ -6,10 +6,10 @@ apt-get install -y \
         less \
         locales \
         ca-certificates \
-        libicu63 \
-        libssl1.1 \
+        libicu70 \
+        libssl3 \
         libc6 \
-        libgcc1 \
+        libgcc-s1 \
         libgssapi-krb5-2 \
         liblttng-ust0 \
         libstdc++6 \
@@ -17,7 +17,7 @@ apt-get install -y \
         curl
 
 # Download the powershell '.tar.gz' archive
-curl -L  https://github.com/PowerShell/PowerShell/releases/download/v7.0.1/powershell-7.0.1-linux-x64.tar.gz -o /tmp/powershell.tar.gz
+curl -L  https://github.com/PowerShell/PowerShell/releases/download/v7.3.4/powershell-7.3.4-linux-x64.tar.gz -o /tmp/powershell.tar.gz
 
 # Create the target folder where powershell will be placed
 mkdir -p /opt/microsoft/powershell/7

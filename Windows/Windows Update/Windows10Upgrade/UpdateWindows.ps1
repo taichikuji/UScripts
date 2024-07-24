@@ -1,18 +1,43 @@
-﻿# Script will try to download and run the Windows 10 Upgrader tool unattendingly.
+﻿$dir = "c:\temp"
+$upgradeUrl = "https://go.microsoft.com/fwlink/?LinkID=799445"
+$upgradeFilePath = Join-Path -Path $dir -ChildPath "Win10Upgrade.exe"
 
-$dir = "c:\temp"
-Try {
-    # Create temp directory
-    New-Item -Path $dir -ItemType Directory -ErrorAction Stop
-} Catch [System.IO.IOException] {
-    Write-Output "Folder already exists! Script should continue."
-    Break
-} Catch {
+function Create-Directory {
+    param (
+        [string]$dirPath
+    )
+    if (-Not (Test-Path -Path $dirPath)) {
+        New-Item -Path $dirPath -ItemType Directory -ErrorAction Stop
+    } else {
+        Write-Output "Folder already exists! Script should continue."
+    }
+}
+
+function Download-File {
+    param (
+        [string]$url,
+        [string]$outputPath
+    )
+    try {
+        (New-Object System.Net.WebClient).DownloadFile($url, $outputPath)
+    } catch {
+        Write-Output "Failed to download file: $_.Exception"
+        Exit
+    }
+}
+
+function Run-Upgrade {
+    param (
+        [string]$filePath
+    )
+    Start-Process -FilePath $filePath -PassThru
+}
+
+try {
+    Create-Directory -dirPath $dir
+    Download-File -url $upgradeUrl -outputPath $upgradeFilePath
+    Run-Upgrade -filePath $upgradeFilePath
+} catch {
     Write-Output $_.Exception
     Exit
 }
-# Download upgrade file
-$(New-Object System.Net.WebClient).DownloadFile("https://go.microsoft.com/fwlink/?LinkID=799445",$("$($dir)\Win10Upgrade.exe"))
-
-# Runs upgrade file
-Start-Process -FilePath $file -PassThru

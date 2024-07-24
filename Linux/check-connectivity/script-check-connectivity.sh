@@ -3,31 +3,31 @@ ROOT_UID=0
 E_NOTROOT=87
 
 if [ "$UID" -ne "$ROOT_UID" ]; then
-        echo "error, necesitas root para ejecutar."
+        echo "Error, you need root to execute."
         exit $E_NOTROOT
 fi
 
-echo "Mi ip privada es: $(hostname -I) y mi ip publica es: $(curl --silent ifconfig.me)"
+echo "My private IP is: $(hostname -I) and my public IP is: $(curl --silent ifconfig.me)"
 
-echo "Mi DNS configurada con este dispositivo es $(cat /etc/resolv.conf | grep -oP 'nameserver \K\S+' | tr '\n' ' ')"
+echo "The DNS configured for this device is $(grep -oP 'nameserver \K\S+' /etc/resolv.conf | tr '\n' ' ')"
 
-gateway=`ip route show 0.0.0.0/0 | grep -oP 'via \K\S+'`
-echo "Mi Gateway es: $gateway"
+gateway=$(ip route show 0.0.0.0/0 | grep -oP 'via \K\S+')
+echo "My Gateway is: $gateway"
 
 ping -c 3 $gateway > /dev/null
 
-if [ $? = 0 ]; then
-	echo "Conexión con el gateway funciona!"
+if [ $? -eq 0 ]; then
+        echo "Connection to the gateway works!"
 else
-	echo "Conexión con el gateway no funciona!"
+        echo "Connection to the gateway does not work!"
 fi
 
-read -p "Cual es la ip que quieres buscar? " ip
+read -p "What is the IP you want to search? " ip
 
 ping -c 3 $ip > /dev/null
 
-if [ $? = 0 ]; then
-	echo "Conexión con $ip funciona!"
+if [ $? -eq 0 ]; then
+        echo "Connection to $ip works!"
 else
-	echo "Conexión con $ip no funciona!"
+        echo "Connection to $ip does not work!"
 fi
